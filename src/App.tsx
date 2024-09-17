@@ -13,6 +13,7 @@ import { RtlProvider } from "@/hooks/RtlContext";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import EditUserPage from "@/pages/EditUserPage";
+import AdmissionForm from "./pages/Admission/AdmissionForm";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <IndexPage />
               </ProtectedRoute>
             }
@@ -32,7 +33,7 @@ function App() {
           <Route
             path="/home"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <IndexPage />
               </ProtectedRoute>
             }
@@ -40,15 +41,23 @@ function App() {
           <Route
             path="/docs"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <DocsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admission/AdmissionForm"
+            element={
+              <ProtectedRoute roles={[""]}>
+                <AdmissionForm />
               </ProtectedRoute>
             }
           />
           <Route
             path="/pricing"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <PricingPage />
               </ProtectedRoute>
             }
@@ -56,7 +65,7 @@ function App() {
           <Route
             path="/blog"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <BlogPage />
               </ProtectedRoute>
             }
@@ -64,7 +73,7 @@ function App() {
           <Route
             path="/about"
             element={
-              <ProtectedRoute roles={["admin", "user", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <AboutPage />
               </ProtectedRoute>
             }
@@ -74,7 +83,7 @@ function App() {
           <Route
             path="/client"
             element={
-              <ProtectedRoute roles={["alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <ClientsPage />
               </ProtectedRoute>
             }
@@ -82,7 +91,7 @@ function App() {
           <Route
             path="/addClient"
             element={
-              <ProtectedRoute roles={["alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <CreateClientPage />
               </ProtectedRoute>
             }
@@ -91,7 +100,7 @@ function App() {
           <Route
             path="/users"
             element={
-              <ProtectedRoute roles={["admin", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <UserManagementPage />
               </ProtectedRoute>
             }
@@ -99,7 +108,7 @@ function App() {
           <Route
             path="/edit-user/:userId"
             element={
-              <ProtectedRoute roles={["admin", "alhafs"]}>
+              <ProtectedRoute roles={[""]}>
                 <EditUserPage />
               </ProtectedRoute>
             }

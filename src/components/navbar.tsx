@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useDirectionLanguage } from '@/components/DirectionLanguageContext';
 import { Kbd } from '@nextui-org/kbd';
-import { Link } from '@nextui-org/link';
+import { Link } from 'react-router-dom';
 import { Input } from '@nextui-org/input';
 import {
   Navbar as NextUINavbar,
@@ -28,7 +28,6 @@ import { Logo } from '@/components/icons';
 import { RtlSwitchButton } from '@/components/rtlSwitch';
 import Logout from './logout';
 
-// Adjusted function to return role directly
 const useUserRole = () => {
   return localStorage.getItem("role") || 'guest';
 };
@@ -37,11 +36,6 @@ export const Navbar: FC = () => {
   const { pathname } = useLocation();
   const { t } = useTranslation();
   const { isRtl } = useDirectionLanguage();
-
-  // Define dynamic dropdown items
-  
-
-  // Directly use the role from useUserRole
   const role = useUserRole();
 
   const searchInput = (
@@ -65,11 +59,10 @@ export const Navbar: FC = () => {
     />
   );
 
-  // Filter navItems based on user role
   const filteredNavItems = siteConfig.navItems.filter((item) =>
     item.roles.length === 0 || item.roles.includes(role)
   );
-  
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -77,7 +70,7 @@ export const Navbar: FC = () => {
           <Link
             className="flex justify-start items-center gap-1"
             color="foreground"
-            href="/"
+            to="/"
           >
             <Logo />
             <p className="font-bold text-inherit">ALHAFS</p>
@@ -89,7 +82,6 @@ export const Navbar: FC = () => {
               return (
                 <Dropdown key={item.href}>
                   <DropdownTrigger>
-                    {/* Ensure DropdownTrigger has only one child element */}
                     <NavbarItem>
                       <span
                         className={clsx(
@@ -101,17 +93,24 @@ export const Navbar: FC = () => {
                       </span>
                     </NavbarItem>
                   </DropdownTrigger>
-
-                  {/* Dynamically render DropdownMenu for Admission */}
-{/* Suggested code may be subject to a license. Learn more: ~LicenseLog:1394753070. */}
-                  <DropdownMenu aria-label="Admission Menu" items={siteConfig.admissionItems}>
-                    {(item) => (
-                      <DropdownItem key={item.key}>
-                        <Link href={`/admission/${item.key}`}>
-                        {isRtl ? item.translations.ur : item.translations.en}
-                        </Link>
-                      </DropdownItem>
-                    )}
+                  
+                  <DropdownMenu aria-label="Admission Menu" variant="faded">
+                    {siteConfig.admissionItems.map((admissionItem) => {
+                      const Icon = admissionItem.icon;
+                      return (
+                        <DropdownItem key={admissionItem.key}>
+                          <Link 
+                            className="flex items-center gap-2" 
+                            to={`/admission/${admissionItem.key}`}
+                          >
+                            <Icon className="text-xl text-default-500" />
+                            <span>
+                              {isRtl ? admissionItem.translations.ur : admissionItem.translations.en}
+                            </span>
+                          </Link>
+                        </DropdownItem>
+                      );
+                    })}
                   </DropdownMenu>
                 </Dropdown>
               );
@@ -124,7 +123,7 @@ export const Navbar: FC = () => {
                       pathname === item.href && 'text-primary font-medium'
                     )}
                     color="foreground"
-                    href={item.href}
+                    to={item.href}
                   >
                     {isRtl ? item.translations.ur : item.translations.en}
                   </Link>
@@ -160,7 +159,7 @@ export const Navbar: FC = () => {
                   pathname === item.href && 'text-primary font-medium'
                 )}
                 color="foreground"
-                href={item.href}
+                to={item.href}
               >
                 {isRtl ? item.translations.ur : item.translations.en}
               </Link>

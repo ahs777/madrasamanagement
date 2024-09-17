@@ -1,3 +1,4 @@
+import { AddNoteIcon, CopyDocumentIcon, EditDocumentIcon, DeleteDocumentIcon } from "@/components/icons.tsx";
 export const siteConfig = {
   name: "Vite + NextUI",
   description: "Make beautiful websites regardless of your design experience.",
@@ -131,23 +132,34 @@ export const siteConfig = {
       roles: ['alhafs'], // Only visible to 'alhafs' role
     },
   ],
-  admissionItems:[
+  admissionItems: [
     {
-      key: "postgraduate",
-      label: "postgraduate",
+      key: "AdmissionForm",
+      label: "AdmissionForm",
       translations: {
         en: "Admission Form",
-        ur: "داخلا فارم",
+        ur: "داخلہ فارم",
       },
+      icon: AddNoteIcon,  // Add icon property
     },
     {
-      key: "admissionList",
-      label: "postgraduate",
+      key: "AdmissionProcess",
+      label: "Admission Process",
       translations: {
-        en: "Addmision List",
-        ur: "فہرست",
+        en: "Admission Process",
+        ur: "داخلہ کاروائی",
       },
-    }
+      icon: CopyDocumentIcon,  // Add icon property
+    },
+    {
+      key: "admissionSummary",
+      label: "Admission Summary",
+      translations: {
+        en: "Admission Summary",
+        ur: "اجمالی رپورٹ",
+      },
+      icon: EditDocumentIcon,  // Add icon property
+    },
   ],
   // Similar changes to navMenuItems if needed
 };
