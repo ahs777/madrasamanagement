@@ -3,11 +3,11 @@ export const siteConfig = {
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     {
-      label: "Home",
+      label: "Admission",
       href: "/",
       translations: {
-        en: "Home",
-        ur: "ہوم",
+        en: "Admission",
+        ur: "داخلا",
       },
       roles: [], // No specific role required
     },
@@ -130,6 +130,24 @@ export const siteConfig = {
       },
       roles: ['alhafs'], // Only visible to 'alhafs' role
     },
+  ],
+  admissionItems:[
+    {
+      key: "postgraduate",
+      label: "postgraduate",
+      translations: {
+        en: "Admission Form",
+        ur: "داخلا فارم",
+      },
+    },
+    {
+      key: "admissionList",
+      label: "postgraduate",
+      translations: {
+        en: "Addmision List",
+        ur: "فہرست",
+      },
+    }
   ],
   // Similar changes to navMenuItems if needed
 };
