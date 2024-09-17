@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles/globals.css */
+:root {
+  --icon-color-light: #000;
+  --icon-color-dark: #fff;
+}
+
+@font-face {
+  font-family: 'mehr';
+  src: url('/fonts/Mehr_Nastaliq_Web_v.2.0.woff') format('woff');
+  font-weight: normal;
+}
+
+[data-theme="dark"] {
+  --icon-color-light: #fff;
+  --icon-color-dark: #000;
+}
+
+/* Apply font only when the direction is RTL */
+body[dir="rtl"] {
+  font-family: meher, 'Jameel Noori Nastaleeq';
+  text-align: right;/* Optional: if you want RTL text alignment */
+  font-weight: 600;
+  font-size: 24pt;
+
+}
+.sidebar {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-open {
+  transform: translateX(0);
+}
+
+.sidebar-closed {
+  transform: translateX(-100%);
+}
