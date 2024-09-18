@@ -1,8 +1,16 @@
-import { AddNoteIcon, CopyDocumentIcon, EditDocumentIcon, DeleteDocumentIcon } from "@/components/icons.tsx";
 export const siteConfig = {
   name: "Vite + NextUI",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
+    {
+      label: "Control",
+      href: "/",
+      translations: {
+        en: "Control",
+        ur: "کنٹرول",
+      },
+      roles: [], // No specific role required
+    },
     {
       label: "Admission",
       href: "/",
@@ -67,6 +75,60 @@ export const siteConfig = {
       roles: ['alhafs'], // Only visible to 'alhafs' role
     },
   ],
+
+  admissionItems: [
+    {
+      key: "AdmissionForm",
+      label: "AdmissionForm",
+      translations: {
+        en: "Admission Form",
+        ur: "داخلہ فارم",
+      },
+    },
+    {
+      key: "AdmissionProcess",
+      label: "Admission Process",
+      translations: {
+        en: "Admission Process",
+        ur: "داخلہ کاروائی",
+      },
+    },
+    {
+      key: "admissionSummary",
+      label: "Admission Summary",
+      translations: {
+        en: "Admission Summary",
+        ur: "اجمالی رپورٹ",
+      },
+    },
+  ],
+  contolItems: [
+    {
+      key: "YearAdd",
+      label: "YearAdd",
+      translations: {
+        en: "Add Education Year",
+        ur: "تعلیمی سال کااضافہ",
+      },
+    },
+    {
+      key: "ClassAdd",
+      label: "Class Add",
+      translations: {
+        en: "Class Add",
+        ur: "درجہ/شعبہ کا اضافہ",
+      },
+    },
+    {
+      key: "admissionSummary",
+      label: "Admission Summary",
+      translations: {
+        en: "Admission Summary",
+        ur: "اجمالی رپورٹ",
+      },
+    },
+  ],
+
   TopBarItems: [
     {
       label: "Hifz",
@@ -130,35 +192,6 @@ export const siteConfig = {
         ur: "کلایئنٹس",
       },
       roles: ['alhafs'], // Only visible to 'alhafs' role
-    },
-  ],
-  admissionItems: [
-    {
-      key: "AdmissionForm",
-      label: "AdmissionForm",
-      translations: {
-        en: "Admission Form",
-        ur: "داخلہ فارم",
-      },
-      icon: AddNoteIcon,  // Add icon property
-    },
-    {
-      key: "AdmissionProcess",
-      label: "Admission Process",
-      translations: {
-        en: "Admission Process",
-        ur: "داخلہ کاروائی",
-      },
-      icon: CopyDocumentIcon,  // Add icon property
-    },
-    {
-      key: "admissionSummary",
-      label: "Admission Summary",
-      translations: {
-        en: "Admission Summary",
-        ur: "اجمالی رپورٹ",
-      },
-      icon: EditDocumentIcon,  // Add icon property
     },
   ],
   // Similar changes to navMenuItems if needed

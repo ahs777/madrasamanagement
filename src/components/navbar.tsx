@@ -78,7 +78,7 @@ export const Navbar: FC = () => {
         </NavbarBrand>
         <div className="hidden lg:flex sm:flex md:flex gap-4 justify-start ml-2">
           {filteredNavItems.map((item) => {
-            if (item.label === 'Admission') {
+            if (item.label === 'Control') {
               return (
                 <Dropdown key={item.href}>
                   <DropdownTrigger>
@@ -93,17 +93,50 @@ export const Navbar: FC = () => {
                       </span>
                     </NavbarItem>
                   </DropdownTrigger>
-                  
+
+                  <DropdownMenu aria-label="Admission Menu" variant="faded">
+                    {siteConfig.contolItems.map((contolItems) => {
+                      return (
+                        <DropdownItem key={contolItems.key}>
+                          <Link
+                            className="flex items-center gap-2"
+                            to={`/control/${contolItems.key}`}
+                          >
+                            <span>
+                              {isRtl ? contolItems.translations.ur : contolItems.translations.en}
+                            </span>
+                          </Link>
+                        </DropdownItem>
+                      );
+                    })}
+                  </DropdownMenu>
+                </Dropdown>
+              );
+            } else if (item.label === 'Admission') {
+              return (
+                <Dropdown key={item.href}>
+                  <DropdownTrigger>
+                    <NavbarItem>
+                      <span
+                        className={clsx(
+                          linkStyles({ color: 'foreground' }),
+                          pathname === item.href && 'text-primary font-medium'
+                        )}
+                      >
+                        {isRtl ? item.translations.ur : item.translations.en}
+                      </span>
+                    </NavbarItem>
+                  </DropdownTrigger>
+
                   <DropdownMenu aria-label="Admission Menu" variant="faded">
                     {siteConfig.admissionItems.map((admissionItem) => {
-                      const Icon = admissionItem.icon;
                       return (
                         <DropdownItem key={admissionItem.key}>
-                          <Link 
-                            className="flex items-center gap-2" 
+                          <Link
+                            className="flex items-center gap-2"
                             to={`/admission/${admissionItem.key}`}
                           >
-                            <Icon className="text-xl text-default-500" />
+                            {/* <Icon className="text-xl text-default-500" /> */}
                             <span>
                               {isRtl ? admissionItem.translations.ur : admissionItem.translations.en}
                             </span>

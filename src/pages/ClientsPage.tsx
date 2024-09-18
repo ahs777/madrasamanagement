@@ -1,199 +1,157 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "@/config/firebase";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { db, auth } from "@/config/firebase";
+import { useAuth } from "@/context/AuthContext";
 import DefaultLayout from "@/layouts/default";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Tooltip,
-  Button,
-} from "@nextui-org/react";
-import { EyeIcon, EditIcon, DeleteIcon } from "@/components/icons";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-interface Client {
-  id: string;
-  name: string;
-  email: string;
-  address: string;
-  createdBy: string;
-  createdAt: Date;
-}
-
-const ClientsPage: React.FC = () => {
-  const [clients, setClients] = useState<Client[]>([]);
+const CreateClientPage: React.FC = () => {
+  const [clientName, setClientName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPassword, setClientPassword] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
-  useEffect(() => {
-    const fetchClients = async () => {
-      const querySnapshot = await getDocs(collection(db, "clients"));
-      const clientsData: Client[] = querySnapshot.docs.map((doc) => {
-        const data = doc.data() as Omit<Client, "id">;
-        return {
-          id: doc.id,
-          ...data,
-        };
-      });
-      setClients(clientsData);
-    };
+  const validateFields = () => {
+    if (!clientName || !clientEmail || !clientPassword || !clientAddress) {
+      setError("All fields are required.");
+      return false;
+    }
+    if (clientPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
 
-    fetchClients();
-  }, []);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-  const handleAddClient = async () => {
-    // Sample data to add, replace with actual data from form or state
-    const newClient = {
-      id: "new-client-id", // Generate or provide unique ID
-      email: "newclient@example.com",
-      clientId: "new-client-clientId",
-      role: "admin",
-    };
+    if (!validateFields()) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      // Add new client to `clients` collection
-      await addDoc(collection(db, "clients"), {
-        ...newClient,
-        createdAt: new Date(),
-        createdBy: "admin", // Set the creator's ID or name
-      });
-
-      // Add the same client to `users` collection
-      await addDoc(collection(db, "users"), {
-        clientId: newClient.clientId,
-        email: newClient.email,
-        id: newClient.id,
-        role: newClient.role,
-      });
-
-      // Optionally, you might want to fetch clients again to refresh the list
-      const querySnapshot = await getDocs(collection(db, "clients"));
-      const clientsData: Client[] = querySnapshot.docs.map((doc) => {
-        const data = doc.data() as Omit<Client, "id">;
-        return {
-          id: doc.id,
-          ...data,
-        };
-      });
-      setClients(clientsData);
-    } catch (error) {
-      console.error("Error adding client:", error);
-    }
-  };
-
-  const handleView = (id: string) => {
-    navigate(`/client/view/${id}`);
-  };
-
-  const handleEdit = (id: string) => {
-    navigate(`/client/edit/${id}`);
-  };
-
-  const handleDelete = async () => {
-    // Handle delete functionality here
-  };
-
-  const renderCell = (
-    client: Client,
-    columnKey: keyof Client | "actions" | "serialNumber"
-  ) => {
-    if (columnKey === "actions") {
-      return (
-        <div className="relative flex justify-center items-center gap-2">
-          <Tooltip content={t("View Client")}>
-            <button
-              aria-label={t("View Client")}
-              className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              onClick={() => handleView(client.id)}
-            >
-              <EyeIcon />
-            </button>
-          </Tooltip>
-          <Tooltip content={t("Edit Client")}>
-            <button
-              aria-label={t("Edit Client")}
-              className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              onClick={() => handleEdit(client.id)}
-            >
-              <EditIcon />
-            </button>
-          </Tooltip>
-          <Tooltip color="danger" content={t("Delete Client")}>
-            <button
-              aria-label={t("Delete Client")}
-              className="text-lg text-danger cursor-pointer active:opacity-50"
-              onClick={() => handleDelete()}
-            >
-              <DeleteIcon />
-            </button>
-          </Tooltip>
-        </div>
+      // Step 1: Create user with email and password in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        clientEmail,
+        clientPassword
       );
-    }
-    if (columnKey === "serialNumber") {
-      const index = clients.findIndex((c) => c.id === client.id) + 1;
-      return <span>{index}</span>;
-    }
-    return client[columnKey] as any;
-  };
+      const clientId = userCredential.user.uid;
 
-  const columns = [
-    { uid: "serialNumber", name: t("S.No") },
-    { uid: "name", name: t("Name") },
-    { uid: "email", name: t("Email") },
-    { uid: "address", name: t("Address") },
-    { uid: "actions", name: t("Actions") },
-  ];
+      // Check if the current user (admin) is logged in
+      const createdBy = user?.uid || "Unknown"; // Fallback to "Unknown" if `user?.uid` is undefined
+
+      // Step 2: Add client details to the "clients" collection in Firestore
+      await addDoc(collection(db, "clients"), {
+        id: clientId,
+        name: clientName,
+        email: clientEmail,
+        address: clientAddress,
+        createdBy: createdBy,
+        createdAt: new Date(),
+      });
+
+      // Step 3: Add user details to the "users" collection in Firestore
+      await setDoc(doc(db, "users", clientId), {
+        id: clientId,
+        email: clientEmail,
+        role: "admin", // You can customize the role as needed
+        createdAt: new Date(),
+      });
+      console.log("User added to users collection with ID: ", clientId);
+
+      setLoading(false);
+      navigate("/client");
+    } catch (error: any) {
+      setLoading(false);
+      if (error.code === "auth/email-already-in-use") {
+        setError("The email address is already in use. Please use a different email.");
+      } else {
+        setError(error.message); // General error message
+      }
+      console.error("Error adding client: ", error.code, error.message);
+    }
+  };
 
   return (
     <DefaultLayout>
-      <h1 className="text-3xl font-bold text-center mb-8">{t("Clients")}</h1>
-      <div className="row container px-10 mb-4">
-        <Button
-          color="primary"
-          className="col-span-2"
-          onClick={handleAddClient}
-        >
-          {t("Add New Client")}
-        </Button>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Create Client</h1>
+        <form onSubmit={handleSubmit}>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <div className="mb-4">
+            <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
+              Client Name
+            </label>
+            <input
+              type="text"
+              id="clientName"
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              required
+              className="mt-1 p-2 block w-full border rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="clientEmail" className="block text-sm font-medium text-gray-700">
+              Client Email
+            </label>
+            <input
+              type="email"
+              id="clientEmail"
+              value={clientEmail}
+              onChange={(e) => setClientEmail(e.target.value)}
+              required
+              className="mt-1 p-2 block w-full border rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="clientPassword" className="block text-sm font-medium text-gray-700">
+              Client Password
+            </label>
+            <input
+              type="password"
+              id="clientPassword"
+              value={clientPassword}
+              onChange={(e) => setClientPassword(e.target.value)}
+              required
+              minLength={6}
+              className="mt-1 p-2 block w-full border rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="clientAddress" className="block text-sm font-medium text-gray-700">
+              Client Address
+            </label>
+            <input
+              type="text"
+              id="clientAddress"
+              value={clientAddress}
+              onChange={(e) => setClientAddress(e.target.value)}
+              required
+              className="mt-1 p-2 block w-full border rounded-md"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-500 text-white p-2 rounded-md"
+          >
+            {loading ? "Creating..." : "Create Client"}
+          </button>
+        </form>
       </div>
-      <section className="row container px-8 flex flex-col items-center justify-center gap-4 py-2">
-        <div className="inline-block max-w-full min-w-full text-center justify-center overflow-x-auto">
-          <Table aria-label={t("Clients Table")}>
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                >
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody items={clients}>
-              {(client) => (
-                <TableRow key={client.id}>
-                  {(columnKey) => (
-                    <TableCell>
-                      {renderCell(
-                        client,
-                        columnKey as keyof Client | "actions" | "serialNumber"
-                      )}
-                    </TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </section>
     </DefaultLayout>
   );
 };
 
-export default ClientsPage;
+export default CreateClientPage;

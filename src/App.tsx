@@ -14,6 +14,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import EditUserPage from "@/pages/EditUserPage";
 import AdmissionForm from "./pages/Admission/AdmissionForm";
+import ClassAdd from "./pages/control/ClassAdd";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <IndexPage />
               </ProtectedRoute>
             }
@@ -33,7 +34,7 @@ function App() {
           <Route
             path="/home"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <IndexPage />
               </ProtectedRoute>
             }
@@ -41,7 +42,7 @@ function App() {
           <Route
             path="/docs"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <DocsPage />
               </ProtectedRoute>
             }
@@ -49,15 +50,23 @@ function App() {
           <Route
             path="/admission/AdmissionForm"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <AdmissionForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/control/ClassAdd"
+            element={
+              <ProtectedRoute roles={["alhafs"]}>
+                <ClassAdd />
               </ProtectedRoute>
             }
           />
           <Route
             path="/pricing"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <PricingPage />
               </ProtectedRoute>
             }
@@ -65,7 +74,7 @@ function App() {
           <Route
             path="/blog"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <BlogPage />
               </ProtectedRoute>
             }
@@ -73,17 +82,18 @@ function App() {
           <Route
             path="/about"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <AboutPage />
               </ProtectedRoute>
             }
           />
           
           <Route path="/login" element={<LoginPage />} />
+          
           <Route
             path="/client"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <ClientsPage />
               </ProtectedRoute>
             }
@@ -91,7 +101,7 @@ function App() {
           <Route
             path="/addClient"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <CreateClientPage />
               </ProtectedRoute>
             }
@@ -100,7 +110,7 @@ function App() {
           <Route
             path="/users"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <UserManagementPage />
               </ProtectedRoute>
             }
@@ -108,7 +118,7 @@ function App() {
           <Route
             path="/edit-user/:userId"
             element={
-              <ProtectedRoute roles={[""]}>
+              <ProtectedRoute roles={["alhafs"]}>
                 <EditUserPage />
               </ProtectedRoute>
             }

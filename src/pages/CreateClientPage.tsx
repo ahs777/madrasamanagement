@@ -16,18 +16,31 @@ const CreateClientPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const validateFields = () => {
+    if (!clientName || !clientEmail || !clientPassword || !clientAddress) {
+      setError("All fields are required.");
+      return false;
+    }
+    if (clientPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (clientPassword.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    // Validate input fields before submitting
+    if (!validateFields()) {
       setLoading(false);
       return;
     }
 
     try {
+      // Create user with email and password in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         clientEmail,
@@ -35,6 +48,7 @@ const CreateClientPage: React.FC = () => {
       );
       const clientId = userCredential.user.uid;
 
+      // Add client details to Firestore
       await addDoc(collection(db, "clients"), {
         id: clientId,
         name: clientName,
@@ -47,7 +61,7 @@ const CreateClientPage: React.FC = () => {
       setLoading(false);
       navigate("/client");
     } catch (error: any) {
-      console.error("Error adding client: ", error.message);
+      console.error("Error adding client: ", error.code, error.message);
       setError(error.message);
       setLoading(false);
     }

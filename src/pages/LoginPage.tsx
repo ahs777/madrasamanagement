@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
 
         // Extract role and clientId from user data
         const role = data.role || "user"; // Default to 'user' if role is not set
-        const clientId = data.clientId || ""; // Default to empty string if clientId is not set
+        const clientId = data.id; // Default to empty string if clientId is not set
 
         // Save role and clientId to localStorage
         localStorage.setItem("role", role);
