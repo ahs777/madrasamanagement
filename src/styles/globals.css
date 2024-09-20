@@ -27,6 +27,9 @@ body[dir="rtl"] {
   font-size: 24pt;
 
 }
+body{
+  word-spacing: 3px;
+}
 .sidebar {
   transition: transform 0.3s ease;
 }
