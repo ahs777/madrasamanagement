@@ -23,8 +23,8 @@
 body[dir="rtl"] {
   font-family: meher, 'Jameel Noori Nastaleeq';
   text-align: right;/* Optional: if you want RTL text alignment */
-  font-weight: 600;
-  font-size: 24pt;
+  /* font-weight: 600;
+  font-size: 24pt; */
 
 }
 body{

@@ -116,15 +116,15 @@ export const siteConfig = {
       label: "Class Add",
       translations: {
         en: "Class Add",
-        ur: "درجہ/شعبہ کا اضافہ",
+        ur: "درجات",
       },
     },
     {
-      key: "admissionSummary",
-      label: "Admission Summary",
+      key: "DepartmentAdd",
+      label: "Departmnet Add",
       translations: {
-        en: "Admission Summary",
-        ur: "اجمالی رپورٹ",
+        en: "Departmnet Add",
+        ur: "شعبہ جات",
       },
     },
   ],
