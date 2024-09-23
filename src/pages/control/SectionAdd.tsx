@@ -14,7 +14,7 @@ interface ClassData {
     clientId: string | null; // Ensure clientId is included
 }
 
-const ClassAdd: FC = () => {
+const SectionAdd: FC = () => {
     const [formData, setFormData] = useState<ClassData>({
         Department: '',
         ClassName: '',
@@ -260,4 +260,4 @@ const ClassAdd: FC = () => {
     );
 };
 
-export default ClassAdd;
+export default SectionAdd;

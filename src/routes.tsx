@@ -12,6 +12,7 @@ import EditUserPage from "@/pages/EditUserPage";
 import AdmissionForm from "@/pages/Admission/AdmissionForm";
 import ClassAdd from "@/pages/control/ClassAdd";
 import DepartmentAdd from "@/pages/control/DepartmentAdd";
+import SectionAdd from "@/pages/control/SectionAdd";
 // import ProtectedRoute from "@/components/ProtectedRoute";
 
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
   { path: "/home", element: IndexPage, roles: ["alhafs"] },
   { path: "/admission/AdmissionForm", element: AdmissionForm, roles: ["alhafs"] },
   { path: "/control/ClassAdd", element: ClassAdd, roles: ["alhafs"] },
+  { path: "/control/SectionAdd", element: SectionAdd, roles: ["alhafs"] },
   { path: "/control/DepartmentAdd", element: DepartmentAdd, roles: ["alhafs"] },
   { path: "/pricing", element: PricingPage, roles: ["alhafs"] },
   { path: "/blog", element: BlogPage, roles: ["alhafs"] },

@@ -120,6 +120,14 @@ export const siteConfig = {
       },
     },
     {
+      key: "SectionAdd",
+      label: "Section Add",
+      translations: {
+        en: "Section Add",
+        ur: "فریق کا اضافہ",
+      },
+    },
+    {
       key: "DepartmentAdd",
       label: "Departmnet Add",
       translations: {
